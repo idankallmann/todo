@@ -3,9 +3,13 @@
 start react:
 
 go app folder
-run - npm start
+run:
+npm install
+npm start
 
 start node:
 
 go server folder
-run node or nodemon index.js
+run:
+npm install
+node or nodemon index.js
