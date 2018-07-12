@@ -1,0 +1,9 @@
+.Admin {
+  display: block;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.Admin table {
+  width: 100%;
+}
