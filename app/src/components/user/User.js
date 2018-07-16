@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import './User.css';
-import axios from 'axios';
+import requestService from '../../services/request';
+// import validateService from '../../services/validate';
+import  { Redirect } from 'react-router-dom';
 
 class User extends Component {
-  contsructor() {
+  constructor() {
+    super();
+    this.state = {
+     fireRedirect: false
+   }
+
   }
+
   render() {
+    const { fireRedirect } = this.state
     return (
       <div className="User">
         <form id="form-user" onSubmit={this.submitHandle.bind(this)}>
@@ -67,6 +76,9 @@ class User extends Component {
           </div>
           <button className="btn btn-primary" type="submit">Submit form</button>
         </form>
+        {fireRedirect && (
+          <Redirect to='admin'/>
+        )}
       </div>
     );
   }
@@ -85,8 +97,13 @@ class User extends Component {
     obj.state = this.refs.state.value;
     obj.zip = this.refs.zip.value;
     obj.textarea = this.refs.textarea.value;
-    axios.post('http://localhost:4200/api/userinfo', obj).then((res) => {
+    let req = new requestService('http://localhost:4200/api/user',obj);
+    req.saveToDB(obj).then((res) => {
       console.log(res);
+      if(!res.data.success) return alert(res.data.msg);
+      setTimeout(function() {
+          this.setState({fireRedirect: true});
+      }.bind(this),2000);
     })
     .catch(ex => {
       console.log(ex);

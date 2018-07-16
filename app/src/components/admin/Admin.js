@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Admin.css';
-import axios from 'axios';
+import requestService from '../../services/request';
 
 class Admin extends Component {
   constructor(props) {
@@ -55,13 +55,14 @@ class Admin extends Component {
     );
   }
   componentDidMount() {
-    axios.get('http://localhost:4200/api/admin')
-      .then(res => {
-        this.setState({data: res.data.msg});
-      })
-      .catch(ex => {
-        console.log(ex);
-      })
+    let req = new requestService('http://localhost:4200/api/admin');
+    req.getFromDB().then(res => {
+      console.log(res);
+      this.setState({data: res.data.msg});
+    })
+    .catch(ex => {
+      console.log(ex);
+    })
   }
 }
 

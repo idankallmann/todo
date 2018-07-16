@@ -1,10 +1,15 @@
-const db = require('../db/db');
+var db       = require('../db/db'),
+    validate = require('../request/requestService');
 
 module.exports = router => {
 
-  router.route('/userinfo')
+  router.route('/user')
     .post((req,res) => {
       let obj = {};
+      var validateEmail = (email) => {
+        var check = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return check.test(email);
+      };
       obj.firstName = req.body.firstName;
       obj.lastName = req.body.lastName;
       obj.phone = req.body.phone;
@@ -16,10 +21,17 @@ module.exports = router => {
       obj.state = req.body.state;
       obj.zip = req.body.zip;
       obj.textarea = req.body.textarea;
-      db.create(obj, doc => {
-        if(!doc) return res.json({success:false, msg:'Cannot save usre information'});
-        res.json({success:true, msg: doc});
-      });
+      validate.validateStreet(obj).then(response => {
+        response = JSON.parse(response);
+        if(response.ErrorCode !== 0 || !validateEmail(obj.email)) return res.json({success:false, msg: response.ErrorMessage || 'Invalid Email'});
+        db.create(obj, doc => {
+          if(!doc) return res.json({success:false, msg:'Cannot save usre information'});
+          res.json({success:true, msg: doc});
+        });
+      })
+      .catch(xhr => {
+        console.log(xhr);
+      })
     })
 
   router.route('/admin')
