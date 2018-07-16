@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Admin.css';
+import { Link } from "react-router-dom";
 import requestService from '../../services/request';
 
 class Admin extends Component {
@@ -10,27 +11,28 @@ class Admin extends Component {
     };
   }
   render() {
+    if(this.state.data <= 0) return (<div><h1>No Users in DB</h1><Link className="nav-item nav-link active" to="/user">Redirect to add user</Link></div>);
     const _data = this.state.data.map((k,i) => {
       return (
         <tr key={i.toString()}>
-          <td key={i.toString()}>{i+1}</td>
-          <td key={k.firstName}>{k.firstName}</td>
-          <td key={k.lastName}>{k.lastName}</td>
-          <td key={k.phone}>{k.phone}</td>
-          <td key={k.email}>{k.email}</td>
-          <td key={k.street}>{k.street}</td>
-          <td key={k.floor}>{k.floor}</td>
-          <td key={k.apartment}>{k.apartment}</td>
-          <td key={k.city}>{k.city}</td>
-          <td key={k.state}>{k.state}</td>
-          <td key={k.zip}>{k.zip}</td>
-          <td key={k.textarea}>{k.textarea}</td>
+          <td key={'index' + i.toString()}>{i+1}</td>
+          <td key={'fname' + k.firstName}>{k.firstName}</td>
+          <td key={'lname' +k.lastName}>{k.lastName}</td>
+          <td key={'phone' +k.phone}>{k.phone}</td>
+          <td key={'email' +k.email}>{k.email}</td>
+          <td key={'street' +k.street}>{k.street}</td>
+          <td key={'floor' +k.floor}>{k.floor}</td>
+          <td key={'apartment' +k.apartment}>{k.apartment}</td>
+          <td key={'city' +k.city}>{k.city}</td>
+          <td key={'state' +k.state}>{k.state}</td>
+          <td key={'zip' +k.zip}>{k.zip}</td>
+          <td key={'text' +k.textarea}>{k.textarea}</td>
         </tr>
       )
     })
     return (
-      <div className="Admin">
-        <table className="table">
+      <div className="Admin table-responsive">
+        <table className="table-striped table-bordered">
           <thead>
             <tr>
               <th scope="col">#</th>

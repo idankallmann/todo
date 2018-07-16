@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './User.css';
-import requestService from '../../services/request';
-// import validateService from '../../services/validate';
 import  { Redirect } from 'react-router-dom';
+import requestService from '../../services/request';
 
 class User extends Component {
   constructor() {
@@ -37,7 +36,7 @@ class User extends Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="inputGroupPrepend2">@</span>
                 </div>
-                <input type="text" className="form-control" id="validationDefaultEmail" ref="email" placeholder="Email" aria-describedby="inputGroupPrepend2" />
+                <input type="text" className="form-control" id="validationDefaultEmail" ref="email" placeholder="Email" />
               </div>
             </div>
           </div>
@@ -71,7 +70,8 @@ class User extends Component {
           </div>
           <div className="form-row">
           <div className="col-md-12">
-            <textarea rows="4" cols="50" maxLength="500" ref="textarea"></textarea>
+            <label htmlFor="textarea">Free text</label>
+            <textarea rows="3" cols="50" maxLength="500" id="textarea" ref="textarea"></textarea>
           </div>
           </div>
           <button className="btn btn-primary" type="submit">Submit form</button>

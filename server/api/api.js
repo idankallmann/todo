@@ -10,6 +10,9 @@ module.exports = router => {
         var check = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return check.test(email);
       };
+      var validatePhone = (phone) => {
+        return phone.length > 10;
+      }
       obj.firstName = req.body.firstName;
       obj.lastName = req.body.lastName;
       obj.phone = req.body.phone;
@@ -23,7 +26,7 @@ module.exports = router => {
       obj.textarea = req.body.textarea;
       validate.validateStreet(obj).then(response => {
         response = JSON.parse(response);
-        if(response.ErrorCode !== 0 || !validateEmail(obj.email)) return res.json({success:false, msg: response.ErrorMessage || 'Invalid Email'});
+        if(response.ErrorCode !== 0 || !validateEmail(obj.email) || validatePhone(obj.phone)) return res.json({success:false, msg: response.ErrorMessage || 'Invalid Email or Phone number'});
         db.create(obj, doc => {
           if(!doc) return res.json({success:false, msg:'Cannot save usre information'});
           res.json({success:true, msg: doc});
